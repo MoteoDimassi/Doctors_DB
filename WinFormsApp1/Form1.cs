@@ -15,11 +15,24 @@ namespace WinFormsApp1
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void Form1_Load(object sender, EventArgs e)
         {
-           
             database.ShowInfoDoctor(dataGridView1);
             database.ShowInfoPacient(dataGridView2);
+        }
+
+        private void PacientBtn_Click(object sender, EventArgs e)
+        {
+            database.InsertData(textBox1.Text, "Pacient");
+            database.ShowInfoPacient(dataGridView2); 
+        }
+
+ 
+        // Добавить доктора
+        private void button1_Click(object sender, EventArgs e)
+        {
+            database.InsertData(textBox1.Text, "Doctor");
+            database.ShowInfoDoctor(dataGridView1);
         }
     }
 }

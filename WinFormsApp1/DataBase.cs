@@ -14,7 +14,7 @@ namespace WinFormsApp1
             _connString = "Server=" + host + ";Database=" + database
            + ";port=" + port + ";User Id=" + username + ";password=" + password;
         }
-   
+
 
 
         /*       public void insertData()
@@ -43,38 +43,48 @@ namespace WinFormsApp1
                    }
                }
 
-               public string showData()
-               {
-                   // строка подключения к БД
-                   // создаём объект для подключения к БД
-                   string name = "bm,..,/";
-                   try
-                   {
-                       MySqlConnection conn = new MySqlConnection(connString);
-                       // устанавливаем соединение с БД
-                       conn.Open();
-                       // запрос
-                       string sql = "SELECT * FROM doctor";
-                       // объект для выполнения SQL-запроса
-                       MySqlCommand command = new MySqlCommand(sql, conn);
-                       // выполняем запрос и получаем ответ
-                       var s = command.ExecuteScalar();
-                       name = s.ToString(); 
-                       // выводим ответ в консоль
-                       Console.WriteLine("dsfdsffds");
-                       Console.WriteLine(s);
-
-                       // закрываем соединение с БД
-                       conn.Close();
-
-                   }
-                   catch (Exception ex)
-                   {
-                       name = "yyyy";
-                       Console.WriteLine("Exception: " + ex);
-                   }
-                   return name;
+             
                }*/
+
+        public void InsertData(string str, string key)
+        {
+            string sql = String.Empty; 
+            using (MySqlConnection con = new MySqlConnection(_connString))
+            {
+                var strSplit = str.Split(";") ; 
+                try
+                {
+                    
+                    switch (key)
+                    {
+                        case "Pacient":
+                            sql = "INSERT INTO medical.patient (id, fist_name, second_name, gender, birthday, address)" +
+                            "VALUES (" + strSplit[0] + ", '" + strSplit[1] + "', '" + strSplit[2] + "' , '" + strSplit[3] + "', '" + strSplit[4] + "','" + strSplit[5] + "')";
+                            break;
+                        case "Recipe":
+                            sql = "INSERT INTO medical.recipe(visit_id, medicine_id, mode_of_application) VALUES(" + strSplit[0] + ", " + strSplit[1] + ", '" + strSplit[2] + "')";
+                            break;
+                        case "Doctor":
+                            sql = "INSERT INTO medical.doctor(first_name, second_name, id_specialization, hire_date, id_doctor) VALUES('"+strSplit[0]+ "', '" + strSplit[1] + "', " + strSplit[2] + ", '" + strSplit[3] + "', " + strSplit[4] + ")";
+                            break;
+                    }
+                    
+                    MySqlCommand cmd = new MySqlCommand(sql, con);
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                    MessageBox.Show("Данные добавлены!");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+        }
+
+     
+
+   
+        //4;Nasya;Vlasova;f;1994-01-17;Lomonosova
 
         public void ShowInfoDoctor(DataGridView dataGridView)
         {
@@ -86,7 +96,7 @@ namespace WinFormsApp1
                 using (var reader = command.ExecuteReader())
 
                     while (reader.Read())                
-                        dataGridView.Rows.Add(reader.GetString(0), reader.GetString(1), reader.GetInt32(2).ToString(), reader.GetDateTime(3));                                                                         
+                        dataGridView.Rows.Add(reader.GetString(0), reader.GetString(1), reader.GetInt32(2).ToString(), reader.GetDateTime(3), reader.GetInt32(4).ToString());                                                                         
             }     
         }
 
