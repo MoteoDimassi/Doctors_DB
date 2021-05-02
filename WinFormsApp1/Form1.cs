@@ -20,8 +20,11 @@ namespace WinFormsApp1
 
         private void button1_Click(object sender, EventArgs e)
         {
-            database.showInfo();
+            // database.showData();
             // textBox1.Text = database.showData();
+
+            //database.connSql();
+            textBox1.Text = database.connSql();
         }
     }
 }
