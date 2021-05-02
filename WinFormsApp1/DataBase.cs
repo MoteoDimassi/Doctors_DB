@@ -1,57 +1,21 @@
 ﻿//using MySql.Data.MySqlClient;
 using System;
 using MySqlConnector;
+using System.Windows.Forms;
 
 namespace WinFormsApp1
 {
     class DataBase
     {
-        private const string conStr = "server=localhost3306;user=syper_olao;" +
-                                      "database=medical;password=123456;"; /*+
-                                      "verifyServerCertificate=false;useSSL=" +
-                                       "false;serverTimezone=UTC;allowPublicKeyRetrieval=true;" +
-                                       "zeroDateTimeBehavior=CONVERT_TO_NULL";*/
+        string _connString; 
 
-        String connString = "Server=" + "localhost" + ";Database=" + "medical"
-           + ";port=" + 3306 + ";User Id=" + "syper_olao" + ";password=" + "123456";
+        public DataBase(string host, int port, string database, string username, string password)
+        {
+            _connString = "Server=" + host + ";Database=" + database
+           + ";port=" + port + ";User Id=" + username + ";password=" + password;
+        }
+   
 
-        /* public void showInfo()
-         {
-             MySql.Data.MySqlClient.MySqlConnection conn;
-             MySql.Data.MySqlClient.MySqlCommand cmd;
-
-             conn = new MySql.Data.MySqlClient.MySqlConnection();
-             cmd = new MySql.Data.MySqlClient.MySqlCommand();
-
-             conn.ConnectionString = conStr;
-
-             try
-             {
-                 conn.Open();
-                 cmd.Connection = conn;
-
-                 cmd.CommandText = "INSERT INTO doctor (first_name, second_name, id_specialization, hire_date)" +
-                                   "VALUES (@first_name, @second_name, @id_specialization, @hire_date);";
-                 cmd.Prepare();
-
-                 cmd.Parameters.AddWithValue("@first_name", "Pol");
-                 cmd.Parameters.AddWithValue("@second_name", "Boal");
-                 cmd.Parameters.AddWithValue("@id_specialization", 4);
-                 cmd.Parameters.AddWithValue("@hire_date", "1987-04-05");
-
-                 for (int i = 1; i <= 1000; i++)
-                 {
-                     cmd.Parameters["@number"].Value = i;
-                     cmd.Parameters["@text"].Value = "A string value";
-
-                     cmd.ExecuteNonQuery();
-                 }
-             }
-             catch (MySql.Data.MySqlClient.MySqlException ex)
-             {
-                 Console.WriteLine(ex.ToString());
-             }
-         }*/
 
         /*       public void insertData()
                {
@@ -112,24 +76,33 @@ namespace WinFormsApp1
                    return name;
                }*/
 
-        public string connSql()
+        public void ShowInfoDoctor(DataGridView dataGridView)
         {
-            string data1 = "a";
-            using (var connection = new MySqlConnection("Server=localhost;User ID=syper_olao;Password=123456;Database=medical"))
+            dataGridView.Rows.Clear();        
+            using (var connection = new MySqlConnection(_connString))
+            {
+                connection.Open();
+                using (var command = new MySqlCommand("select * from doctor;", connection))
+                using (var reader = command.ExecuteReader())
+
+                    while (reader.Read())                
+                        dataGridView.Rows.Add(reader.GetString(0), reader.GetString(1), reader.GetInt32(2).ToString(), reader.GetDateTime(3));                                                                         
+            }     
+        }
+
+        public void ShowInfoPacient(DataGridView dataGridView)
+        {
+            dataGridView.Rows.Clear();
+            using (var connection = new MySqlConnection(_connString))
             {
                 connection.Open();
 
-                using (var command = new MySqlCommand("select * from doctor;", connection))
+                using (var command = new MySqlCommand("select * from patient;", connection))
                 using (var reader = command.ExecuteReader())
+
                     while (reader.Read())
-                    {
-                        data1 += reader.GetString(0);
-                        Console.WriteLine(reader.GetString(0));
-                    }
-                
-             
+                        dataGridView.Rows.Add(reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetDateTime(4), reader.GetString(5));
             }
-            return data1;
         }
     }
 }

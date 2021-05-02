@@ -3,16 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace WinFormsApp1
 {
     public partial class Form1 : Form
     {
-        DataBase database = new DataBase();
+        DataBase database = new DataBase("localhost", 3306, "medical", "syper_olao", "123456");
         public Form1()
         {
             InitializeComponent();
@@ -20,11 +17,9 @@ namespace WinFormsApp1
 
         private void button1_Click(object sender, EventArgs e)
         {
-            // database.showData();
-            // textBox1.Text = database.showData();
-
-            //database.connSql();
-            textBox1.Text = database.connSql();
+           
+            database.ShowInfoDoctor(dataGridView1);
+            database.ShowInfoPacient(dataGridView2);
         }
     }
 }
