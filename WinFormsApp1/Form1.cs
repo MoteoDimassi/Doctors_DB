@@ -19,6 +19,8 @@ namespace WinFormsApp1
         {
             database.ShowInfoDoctor(dataGridView1);
             database.ShowInfoPacient(dataGridView2);
+            database.ShowInfoMedicals(dataGridView3);
+            database.ShowInfoVisit(dataGridView4);
         }
 
         private void PacientBtn_Click(object sender, EventArgs e)
@@ -33,6 +35,19 @@ namespace WinFormsApp1
         {
             database.InsertData(textBox1.Text, "Doctor");
             database.ShowInfoDoctor(dataGridView1);
+        }
+
+        // Добавить лекартсво 
+        private void button2_Click(object sender, EventArgs e)
+        {
+            database.InsertData(textBox1.Text, "Medications");
+            database.ShowInfoMedicals(dataGridView3);
+        }
+        // добавить прием 
+        private void button3_Click(object sender, EventArgs e)
+        {
+            database.InsertData(textBox1.Text, "Visit");
+            database.ShowInfoVisit(dataGridView4);
         }
     }
 }

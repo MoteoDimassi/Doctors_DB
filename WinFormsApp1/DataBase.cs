@@ -15,37 +15,6 @@ namespace WinFormsApp1
            + ";port=" + port + ";User Id=" + username + ";password=" + password;
         }
 
-
-
-        /*       public void insertData()
-               {
-
-                   using (MySqlConnection con = new MySqlConnection(conStr))
-                   {
-                       try
-                       {
-                           string sql = "INSERT INTO doctor (first_name, second_name, id_specialization, hire_date)" +
-                                        "VALUES (@first_name, @second_name, @id_specialization, @hire_date);";
-                           con.Open();
-                           MySqlCommand cmd = new MySqlCommand(sql, con);
-                           //создаем параметры и добавляем их в коллекцию
-                           cmd.Parameters.AddWithValue("@first_name", "Pol");
-                           cmd.Parameters.AddWithValue("@second_name", "Boal");
-                           cmd.Parameters.AddWithValue("@id_specialization", 4);
-                           cmd.Parameters.AddWithValue("@hire_date", "1987-04-05");
-                           cmd.ExecuteNonQuery();
-                           con.Close();
-                       }
-                       catch (Exception ex)
-                       {
-                           Console.WriteLine("Exception: " + ex);
-                       }
-                   }
-               }
-
-             
-               }*/
-
         public void InsertData(string str, string key)
         {
             string sql = String.Empty; 
@@ -67,6 +36,14 @@ namespace WinFormsApp1
                         case "Doctor":
                             sql = "INSERT INTO medical.doctor(first_name, second_name, id_specialization, hire_date, id_doctor) VALUES('"+strSplit[0]+ "', '" + strSplit[1] + "', " + strSplit[2] + ", '" + strSplit[3] + "', " + strSplit[4] + ")";
                             break;
+                        case "Medications":
+                            sql = "INSERT INTO medical.medications(id, name, mode_of_application, healing, side_effect) VALUES(" + strSplit[0] + ", '" + strSplit[1] + "', '" + strSplit[2] + "', '" + strSplit[3] + "', '" + strSplit[4] + "')";
+                            break;
+                        case "Visit":
+                            DateTime theDate = DateTime.Now;
+                           // theDate.ToString("yyyy-MM-dd H:mm:ss");
+                            sql = "INSERT INTO medical.visit (visit_id, id_doctor, date, place, symptoms, diagnosis, recommendations, id_patient) VALUES (" + strSplit[0] + ", " + strSplit[1] + ", '" + theDate.ToString("yyyy-MM-dd H:mm:ss") + "', '" + strSplit[2] + "', '" + strSplit[3] + "', '" + strSplit[4] + "', '" + strSplit[5] + "', " + strSplit[6] + ")";
+                            break;
                     }
                     
                     MySqlCommand cmd = new MySqlCommand(sql, con);
@@ -81,11 +58,9 @@ namespace WinFormsApp1
             }
         }
 
-     
-
-   
+        // 2;Perezetamol;arainst tempetature;effective;possible food disorders
         //4;Nasya;Vlasova;f;1994-01-17;Lomonosova
-
+        // 2;3;В болинце;галлюцинации;шизофрения; пить воду;4;
         public void ShowInfoDoctor(DataGridView dataGridView)
         {
             dataGridView.Rows.Clear();        
@@ -100,6 +75,20 @@ namespace WinFormsApp1
             }     
         }
 
+        public void ShowInfoVisit(DataGridView dataGridView)
+        {
+            dataGridView.Rows.Clear();
+            using (var connection = new MySqlConnection(_connString))
+            {
+                connection.Open();
+                using (var command = new MySqlCommand("SELECT * FROM visit;", connection))
+                using (var reader = command.ExecuteReader())
+
+                    while (reader.Read())
+                        dataGridView.Rows.Add(reader.GetInt32(0), reader.GetInt32(1), reader.GetDateTime(2), reader.GetString(3), reader.GetValue(4), reader.GetValue(5), reader.GetValue(6), reader.GetInt32(7));
+            }
+        }
+
         public void ShowInfoPacient(DataGridView dataGridView)
         {
             dataGridView.Rows.Clear();
@@ -111,7 +100,22 @@ namespace WinFormsApp1
                 using (var reader = command.ExecuteReader())
 
                     while (reader.Read())
-                        dataGridView.Rows.Add(reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetDateTime(4), reader.GetString(5));
+                        dataGridView.Rows.Add(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetDateTime(4), reader.GetString(5));
+            }
+        }
+    
+        public void ShowInfoMedicals(DataGridView dataGridView)
+        {
+            dataGridView.Rows.Clear();
+            using (var connection = new MySqlConnection(_connString))
+            {
+                connection.Open();
+
+                using (var command = new MySqlCommand("SELECT * FROM medications; ", connection))
+                using (var reader = command.ExecuteReader())
+
+                    while (reader.Read())
+                        dataGridView.Rows.Add(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetValue(3), reader.GetValue(4));
             }
         }
     }
