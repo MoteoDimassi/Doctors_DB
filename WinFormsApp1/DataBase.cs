@@ -71,7 +71,7 @@ namespace WinFormsApp1
                 using (var reader = command.ExecuteReader())
 
                     while (reader.Read())                
-                        dataGridView.Rows.Add(reader.GetString(0), reader.GetString(1), reader.GetInt32(2).ToString(), reader.GetDateTime(3), reader.GetInt32(4).ToString());                                                                         
+                        dataGridView.Rows.Add(reader.GetInt32(0).ToString(), reader.GetString(1), reader.GetString(2), reader.GetInt32(3).ToString(), reader.GetDateTime(4));                                                                         
             }     
         }
 
