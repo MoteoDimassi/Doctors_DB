@@ -449,7 +449,7 @@ namespace WinFormsApp1
             // 
             // buttonToExel
             // 
-            this.buttonToExel.Location = new System.Drawing.Point(43, 784);
+            this.buttonToExel.Location = new System.Drawing.Point(213, 730);
             this.buttonToExel.Name = "buttonToExel";
             this.buttonToExel.Size = new System.Drawing.Size(94, 29);
             this.buttonToExel.TabIndex = 20;
@@ -461,7 +461,7 @@ namespace WinFormsApp1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1582, 853);
+            this.ClientSize = new System.Drawing.Size(1582, 858);
             this.Controls.Add(this.buttonToExel);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.dataGridView4);

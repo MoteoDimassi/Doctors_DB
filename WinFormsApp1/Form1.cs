@@ -61,7 +61,7 @@ namespace WinFormsApp1
                 app.Visible = true;
                 Excel.Workbook book = app.Workbooks.Add();
 
-                Excel.Worksheet sheet1 = app.Worksheets.Add();
+                Excel.Worksheet sheet1 = book.Sheets[1];
                 sheet1.Name = "Таблица врачей";
                 for (int i = 0; i < dataGridView1.RowCount; i++)
                     for (int j = 0; j < dataGridView1.ColumnCount; j++)
